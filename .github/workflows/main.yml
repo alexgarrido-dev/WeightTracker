@@ -35,7 +35,7 @@ jobs:
       - name: Ejecutar script de Python
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-        run: python main.py
+        run: WeightTracker_Analysis.py
 
       - name: Guardar el nuevo HTML en GitHub
         run: |
