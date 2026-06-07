@@ -1,0 +1,34 @@
+name: Actualizar Dashboard Notion
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Se ejecuta a las 06:00 AM UTC todos los días
+  workflow_dispatch: # Te permite ejecutarlo manualmente con un botón
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar librerías
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar script de Python
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: python main.py
+
+      - name: Guardar el nuevo HTML en GitHub
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add peso.html
+          git commit -m "Actualización automática del dashboard" || echo "Sin cambios"
+          git push
